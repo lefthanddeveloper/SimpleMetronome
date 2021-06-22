@@ -20,7 +20,7 @@ namespace QuantizedLoopStation
         private int numberBeatInBar = 4;
         public int NumberBeatInBar => numberBeatInBar;
         private int quantizeDegree = 4;
-        public int QuantizeDegree => 4;
+        public int QuantizeDegree => quantizeDegree;
 
 
         private float subBeatTimer;
@@ -84,7 +84,7 @@ namespace QuantizedLoopStation
                 subBeatTimer -= beatInvertal / quantizeDegree;
                 subBeatCount++;
 
-                if (subBeatCount % 4 == 0)
+                if (subBeatCount % quantizeDegree == 0)
                 {
                     beatCount++;
                     tic(beatCount);
@@ -125,7 +125,7 @@ namespace QuantizedLoopStation
 
         private void OnTic(int beat)
         {
-            if (beat % 4 == 0)
+            if (beat % quantizeDegree == 0)
             {
                 audioSource.PlayOneShot(metronomeClip[0], 1.0f);
             }
@@ -137,7 +137,7 @@ namespace QuantizedLoopStation
 
         private void OnSubTic(int subBeat)
         {
-            // audioSource.PlayOneShot(metronomeClip[0], 0.05f);
+            audioSource.PlayOneShot(metronomeClip[0], 0.1f);
         }
     }
 }

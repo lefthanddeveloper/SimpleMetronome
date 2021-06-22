@@ -87,7 +87,7 @@ namespace QuantizedLoopStation
 
         private void InstantiateKeys()
         {
-            for(int i =0 ; i<library.audioClips.Length;i++)
+            for (int i = 0; i < library.audioClips.Length; i++)
             {
                 Key key = Instantiate<Key>(keyPrefab, content_keys);
                 key.Init(0, i, audioSource);
@@ -121,18 +121,19 @@ namespace QuantizedLoopStation
 
         public void AddLoopNote(int _quantizedRawBeat, int _instrumentID, int _noteID)
         {
-            if(loopState == LoopState.Waiting)
+            if (loopState == LoopState.Waiting)
             {
                 loopState = LoopState.Recording;
             }
 
-            int localBeat = _quantizedRawBeat % 16;
+            int divideFactor = GlobalMetronome.instance.NumberBeatInBar * GlobalMetronome.instance.QuantizeDegree;
+            int localBeat = _quantizedRawBeat % divideFactor;
             loopNotes.Add(localBeat, new LoopNote(_instrumentID, _noteID));
         }
 
         public bool IsNoteAddable()
         {
-            if(loopState == LoopState.Waiting || loopState == LoopState.Recording)
+            if (loopState == LoopState.Waiting || loopState == LoopState.Recording)
             {
                 return true;
             }
@@ -149,7 +150,8 @@ namespace QuantizedLoopStation
         {
             if (loopState != LoopState.Playing) return;
 
-            int local = rawSubBeat % 16;
+            int divideFactor = GlobalMetronome.instance.NumberBeatInBar * GlobalMetronome.instance.QuantizeDegree;
+            int local = rawSubBeat % divideFactor;
 
             if (loopNotes.TryGetValue(local, out LoopNote loopNote))
             {
