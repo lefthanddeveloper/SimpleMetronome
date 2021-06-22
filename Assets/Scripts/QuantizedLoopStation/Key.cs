@@ -28,6 +28,17 @@ namespace QuantizedLoopStation
                 audioSource.PlayOneShot(Library.instance.audioClips[noteID]);
                 GlobalMetronome.instance.AddLoopNote(0, noteID);
         }
+
+        private void Update() {
+            if(noteID != 0) return;
+
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                audioSource.PlayOneShot(Library.instance.audioClips[noteID]);
+                GlobalMetronome.instance.AddLoopNote(0, noteID);
+            }
+
+        }
     }
 
 }

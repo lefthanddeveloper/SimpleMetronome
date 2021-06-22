@@ -19,7 +19,7 @@ namespace QuantizedLoopStation
 
         private int numberBeatInBar = 4;
         public int NumberBeatInBar => numberBeatInBar;
-        private int quantizeDegree = 4;
+        private int quantizeDegree = 2;
         public int QuantizeDegree => quantizeDegree;
 
 
@@ -96,14 +96,14 @@ namespace QuantizedLoopStation
 
         }
 
-        float deltaTime;
-        private void Update()
-        {
-            deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
-            float fps = 1.0f / deltaTime;
+        // float deltaTime;
+        // private void Update()
+        // {
+        //     deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
+        //     float fps = 1.0f / deltaTime;
 
-            Debug.Log(fps);
-        }
+        //     Debug.Log(fps);
+        // }
 
         public int GetCurrentQuantizedSubBeat()
         {
