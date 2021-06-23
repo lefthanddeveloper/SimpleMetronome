@@ -12,10 +12,12 @@ namespace QuantizedLoopStation
         public int instrumentID;
         public int noteID;
         public bool isPlayed;
-        public LoopNote(int _instrumentID, int _noteID)
+        public int localBeat;
+        public LoopNote(int _instrumentID, int _noteID, int _localBeat)
         {
             instrumentID = _instrumentID;
             noteID = _noteID;
+            localBeat = _localBeat;
             isPlayed = false;
         }
 
@@ -69,7 +71,8 @@ namespace QuantizedLoopStation
         private float loopTime;
 
 
-        private Dictionary<int, LoopNote> loopNotes = new Dictionary<int, LoopNote>();
+        // private Dictionary<int, LoopNote> loopNotes = new Dictionary<int, LoopNote>();
+        private List<LoopNote> loopNotes = new List<LoopNote>();
 
 
         [SerializeField] private Text text_LoopState;
@@ -128,7 +131,8 @@ namespace QuantizedLoopStation
 
             int divideFactor = GlobalMetronome.instance.NumberBeatInBar * GlobalMetronome.instance.QuantizeDegree;
             int localBeat = _quantizedRawBeat % divideFactor;
-            loopNotes.Add(localBeat, new LoopNote(_instrumentID, _noteID));
+            // loopNotes.Add(localBeat, new LoopNote(_instrumentID, _noteID));
+            loopNotes.Add(new LoopNote(_instrumentID, _noteID, localBeat));
         }
 
         public bool IsNoteAddable()
@@ -153,9 +157,17 @@ namespace QuantizedLoopStation
             int divideFactor = GlobalMetronome.instance.NumberBeatInBar * GlobalMetronome.instance.QuantizeDegree;
             int local = rawSubBeat % divideFactor;
 
-            if (loopNotes.TryGetValue(local, out LoopNote loopNote))
+            // if (loopNotes.TryGetValue(local, out LoopNote loopNote))
+            // {
+            //     audioSource.PlayOneShot(library.audioClips[loopNote.noteID]);
+            // }
+
+            for(int i=0; i< loopNotes.Count;i++)
             {
-                audioSource.PlayOneShot(library.audioClips[loopNote.noteID]);
+                if(loopNotes[i].localBeat == local)
+                {
+                    audioSource.PlayOneShot(library.audioClips[loopNotes[i].noteID]);
+                }
             }
 
         }
